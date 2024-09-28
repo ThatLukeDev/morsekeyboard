@@ -75,13 +75,13 @@ void loop() {
     lastTime = millis();
   }
   else if (!buttonDown && millis() - lastTime > dividertime) {
-    char c = ' ';
+    char c = 0;
 
     if (morses.find(built) != morses.end()) {
       c = morses[built];
     }
 
-    if (c != ' ') {
+    if (c != 0) {
       Serial.print(c);
     }
 
