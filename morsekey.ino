@@ -7,6 +7,7 @@
 
 unsigned long dividertime = 4000 / WPM;
 bool buttonDown = false;
+bool modifier = false;
 unsigned long lastTime = 0;
 std::string built = "";
 
@@ -50,7 +51,16 @@ std::map<std::string, char> morses = {
 	{ ".-.-.-",	'.' },
 	{ "--..--",	',' },
 	{ "..--..",	'?' },
-	{ "----",	' ' }, // Special character, doesnt exist in International Morse Code repurposed for space (for thinking time :) )
+	{ ".-..-.",	'"' },
+	{ "-....-",	'-' },
+	{ "-...-",	'=' },
+	{ "---...",	':' },
+	{ "-.-.-.",	';' },
+	{ "-.-.--",	'!' },
+	{ "-..-.",	'/' },
+	{ "-.--.",	'(' },
+	{ "-.--.-",	')' },
+	{ "----",	16 }, // Modifier
 };
 
 void setup() {
@@ -81,8 +91,22 @@ void loop() {
       c = morses[built];
     }
 
-    if (c != 0) {
-      Serial.print(c);
+    if (c == 16) {
+      modifier = true;
+    }
+    else if (c != 0) {
+      if (modifier) {
+        switch (c) {
+          case 'S':
+            Serial.print(" ");
+            break;
+        }
+      }
+      else {
+        Serial.print(c);
+      }
+
+      modifier = false;
     }
 
     built = "";
