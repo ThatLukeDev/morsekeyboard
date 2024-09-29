@@ -14,8 +14,7 @@
 unsigned long dividertime = 4000 / WPM;
 bool buttonDown = false;
 bool modifier = false;
-uint8_t modifiera = 0b11111111;
-uint8_t modifierv = 0b00000000;
+uint8_t modifierv = 0b0000;
 unsigned long lastTime = 0;
 std::string built = "";
 
@@ -181,7 +180,7 @@ void keyPress(uint8_t val) {
   KEYMAP map = keymap[val];
   
   InputReport report = {
-    .modifiers = map.modifier,
+    .modifiers = modifierv,
     .reserved = 0,
     .pressedKeys = {
       map.usage,
@@ -245,17 +244,19 @@ void loop() {
             keyPress((uint8_t)31); // escape
             break;
           case 't':
-            modifiera = (uint8_t)0b11011111; // shift
+            modifierv = (uint8_t)0b0010; // shift
             break;
           case 'm':
-            modifiera = (uint8_t)0b00011111; // control
+            modifierv = (uint8_t)0b0001; // control
+            break;
+          case 'o':
+            modifierv = (uint8_t)0b0100; // alt
             break;
         }
       }
       else {
-        keyPress((uint8_t)c & modifiera | modifierv);
-        modifiera = 0b11111111;
-        modifierv = 0b00000000;
+        keyPress((uint8_t)c);
+        modifierv = 0b000;
       }
 
       modifier = false;
