@@ -78,7 +78,7 @@ struct InputReport {
   uint8_t pressedKeys[6];
 };
 
-static const uint8_t REPORT_MAP[] = {
+const uint8_t REPORT_DESCRIPTOR_MAP[] = {
   USAGE_PAGE(1),      0x01, // Generic Desktop Controls
   USAGE(1),           0x06, // Keyboard
   COLLECTION(1),      0x01, // Application
@@ -154,7 +154,7 @@ void bluetoothKeyTask(void*) {
   BLESecurity* security = new BLESecurity();
   security->setAuthenticationMode(ESP_LE_AUTH_BOND);
 
-  hid->reportMap((uint8_t*)REPORT_MAP, sizeof(REPORT_MAP));
+  hid->reportMap((uint8_t*)REPORT_DESCRIPTOR_MAP, sizeof(REPORT_DESCRIPTOR_MAP));
   hid->startServices();
 
   hid->setBatteryLevel(100);
@@ -241,7 +241,9 @@ void loop() {
             keyPress((uint8_t)8); // backspace
             break;
           case 's':
-            keyPress((uint8_t)31); // escape
+            modifierv = (uint8_t)0b0001; // control
+            keyPress((uint8_t)'['); // escape
+            modifierv = (uint8_t)0b0000; // control
             break;
           case 't':
             modifierv = (uint8_t)0b0010; // shift
