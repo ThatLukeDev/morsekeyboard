@@ -245,6 +245,12 @@ void loop() {
             keyPress((uint8_t)'['); // escape
             modifierv = (uint8_t)0b0000; // control
             break;
+          case 'h':
+            keyPress((uint8_t)0); // 
+            break;
+          case '5':
+            keyPress((uint8_t)10); // enter
+            break;
           case 't':
             modifierv = (uint8_t)0b0010; // shift
             break;
